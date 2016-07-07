@@ -1,0 +1,31 @@
+{
+  "name": "ReactHeartApp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "engines": {
+    "node": "5.11.0",
+    "npm": "3.8.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "./node_modules/.bin/webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.10.4",
+    "babel-loader": "^6.2.4",
+    "babel-preset-react": "^6.11.1",
+    "react": "^15.2.0",
+    "react-d3-basic": "^1.6.11",
+    "react-dom": "^15.2.0",
+    "react-router": "^2.5.2",
+    "webpack": "^1.13.1"
+  },
+  "success_url": "/"
+}
