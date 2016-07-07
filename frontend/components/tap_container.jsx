@@ -3,7 +3,10 @@ var HeartGraph = require('./heart_graph.jsx').HeartGraph;
 
 var TapContainer = React.createClass({
   getInitialState: function(){
-    return {index: 0, tapTimestamps: []};
+    return {index: 0, tapTimestamps: [], accuracyAchieved: false};
+  },
+  handleAccuracyAchieved: function(){
+    this.setState({accuracyAchieved:true});
   },
   registerTap: function(){
     var tempIndex = this.state.index + 1;
@@ -17,19 +20,21 @@ var TapContainer = React.createClass({
     }
     
     newTimeStampsArray.push(toPush);
-    
-    console.log("toPush.date = " + toPush.date);
-    console.log("toPush.index = " + toPush.index);
-    console.log(newTimeStampsArray);
+
     this.setState({index: tempIndex, tapTimestamps: newTimeStampsArray});
   },
   render: function(){
+    if(this.state.accuracyAchieved){
+      return(
+        <div>DONE WITH HEART RATE! </div>
+      )
+    }
     return(
       <div className="tap-container" onClick={this.registerTap}>
         <h1>Instructions</h1>
         <div>1. feel pulse</div>
         <div>2. start tapping screen</div>
-        <HeartGraph chartData={this.state.tapTimestamps}/>
+        <HeartGraph chartData={this.state.tapTimestamps} handleAccuracyAchieved={this.handleAccuracyAchieved} />
       </div>
     )
   }
