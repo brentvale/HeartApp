@@ -1,5 +1,4 @@
 var React = require('react');
-var Chart = require('react-d3-core').Chart;
 var LineChart = require('react-d3-basic').LineChart;
 
 var HeartGraph = React.createClass({

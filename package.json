@@ -18,13 +18,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babel-core": "^6.10.4",
+    "babel-core": "^6.9.0",
     "babel-loader": "^6.2.4",
-    "babel-preset-react": "^6.11.1",
+    "babel-preset-react": "^6.5.0",
+    "d3": "^4.1.0",
+    "rd3": "^0.6.5",
     "react": "^15.2.0",
     "react-d3-basic": "^1.6.11",
-    "react-dom": "^15.2.0",
-    "react-router": "^2.5.2",
+    "react-dom": "^15.0.2",
+    "react-router": "^2.4.1",
     "webpack": "^1.13.1"
   }
 }
