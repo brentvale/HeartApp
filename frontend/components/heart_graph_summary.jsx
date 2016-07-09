@@ -85,6 +85,7 @@ var HeartGraphSummary = React.createClass({
           {dataDisplay}
         </div>
         <LineChart width={700} height={300} data={chartData} chartSeries={chartSeries} x={x} />
+        <p>Reload Browser window to tap your heart rate again.</p>
       </div>
       
     )
