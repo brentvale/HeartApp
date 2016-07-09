@@ -1,5 +1,6 @@
 var React = require('react');
 var HeartGraph = require('./heart_graph.jsx').HeartGraph;
+var HeartGraphSummary = require('./heart_graph_summary.jsx').HeartGraphSummary;
 
 var TapContainer = React.createClass({
   getInitialState: function(){
@@ -26,7 +27,7 @@ var TapContainer = React.createClass({
   render: function(){
     if(this.state.accuracyAchieved){
       return(
-        <div>DONE WITH HEART RATE! </div>
+        <HeartGraphSummary chartData={this.state.tapTimestamps}/>
       )
     }
     return(

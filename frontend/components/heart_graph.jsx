@@ -3,23 +3,38 @@ var LineChart = require('react-d3-basic').LineChart;
 
 var HeartGraph = React.createClass({
   componentWillReceiveProps: function(){
+    //must have at least 6 recorded elements
+    if(this.props.chartData.length > 5){
+      if(this.isAccuracyAchieved()){
+        this.props.handleAccuracyAchieved();
+      }
+    }
+  },
+  isAccuracyAchieved: function(){
     var chartData = [];
     var total = 0;
     var average;
+    var accuracyAchieved = true;
+    
     for(var i=0; i < this.props.chartData.length - 1; i++){
       var timeBetweenBeats = this.props.chartData[i + 1].date - this.props.chartData[i].date;
       var calculatedRate = 60/(timeBetweenBeats/1000);
       var newObj = {rate: calculatedRate, index: i}
     
-      total += calculatedRate;
       chartData.push(newObj)
     }
-    
-    if(this.props.chartData.length > 20){
-      //NEED TO DEFINE ACCURACY
-      this.props.handleAccuracyAchieved();
+    for(var i=1; i < 6; i++){
+      total += chartData[chartData.length-i].rate;
     }
-      
+    average = parseInt(total / 5);
+    
+    for(var i=1; i < 6; i++){
+      if(Math.abs((chartData[chartData.length-i].rate)-average) > 10){
+        accuracyAchieved = false
+      }
+    }
+    
+    return accuracyAchieved;
   },
   render: function(){
     var width = 700,
@@ -45,7 +60,7 @@ var HeartGraph = React.createClass({
      var chartData = [];
      
      //dummy chart data so graph draws
-     if(this.props.chartData.length < 2){
+     if(this.props.chartData.length < 1){
        chartData = [
          {
            rate: 50, index: 0,
@@ -64,28 +79,49 @@ var HeartGraph = React.createClass({
      
      var total = 0;
      var average;
-     for(var i=0; i < this.props.chartData.length - 1; i++){
-       var timeBetweenBeats = this.props.chartData[i + 1].date - this.props.chartData[i].date;
-       var calculatedRate = 60/(timeBetweenBeats/1000);
-       var newObj = {rate: calculatedRate, index: i}
+     var timeBetweenBeats;
+     var calculatedRate;
+     var newObj;
      
+     
+     for(var i=0; i < this.props.chartData.length - 1; i++){
+       timeBetweenBeats = this.props.chartData[i + 1].date - this.props.chartData[i].date;
+       calculatedRate = 60/(timeBetweenBeats/1000);
+       newObj = {rate: calculatedRate, index: i}
+   
        total += calculatedRate;
        chartData.push(newObj)
      }
    
-     average = parseInt(total / this.props.chartData.length);
+     if(chartData.length > 5){
+       total = 0;
+       //calculate new total and average using just last 5 values
+       for(var i=1; i < 6; i++){
+         total += chartData[chartData.length-i].rate;
+       }
+       average = parseInt(total / 5);
+     } else {
+       average = (chartData.length == 0) ? 0 : parseInt(total / chartData.length);
+     }
 
-     //change chartSeries data.color to green if last 3 beats are within 10% of the average?
-     //need to define what an accurate HR is 
-     //possibly terminate scenario once a HR is captured
-     if(chartData.length > 7){
-       chartSeries = [
-         {
-           field: 'rate',
-           name: 'Heart Rate',
-           color: 'green'
+     //change chartSeries data.color to green if last 5 beats are within 10 bpm of the average
+     var accuracyAchieved = true;
+     
+     if(chartData.length > 5){
+       for(var i=1; i < 6; i++){
+         if(Math.abs((chartData[chartData.length-i].rate)-average) > 10){
+           accuracyAchieved = false
          }
-       ]
+       }
+       if(accuracyAchieved){
+         chartSeries = [
+           {
+             field: 'rate',
+             name: 'Heart Rate',
+             color: 'green'
+           }
+         ]
+       }
      }
   
     return (
