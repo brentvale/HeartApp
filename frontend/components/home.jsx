@@ -7,7 +7,7 @@ var Home = React.createClass({
       <div>
         <h1>HearTapp</h1>
         <p>HearTapp is a heart rate measuring application. </p>
-        <Link className="" to="/start_tapping"><div id="startButton" onClick={this.startTapping}>Ready to start Tapping</div></Link>
+        <Link className="links" to="/start_tapping"><div id="startButton">Ready to start Tapping</div></Link>
       </div>
     )
   }

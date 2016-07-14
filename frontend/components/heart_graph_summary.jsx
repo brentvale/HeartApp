@@ -6,64 +6,17 @@ var HeartGraphSummary = React.createClass({
     return {showData: false};
   },
   toggleDataDisplay: function(){
-    console.log("togglingDataDisplay");
     var newShowData = !this.state.showData;
     
     this.setState({showData:newShowData});
   },
   render: function(){
-    var width = 700,
-      height = 300,
-      margins = {left: 100, right: 100, top: 50, bottom: 50},
-      title = "User sample",
-      // chart series,
-      // field: is what field your data want to be selected
-      // name: the name of the field that display in legend
-      // color: what color is the line
-    chartSeries = [
-      {
-        field: 'rate',
-        name: 'Heart Rate',
-        color: 'red'
-      }
-    ],
-    // your x accessor
-    x = function(d) {
-      return d.index;
-    },
-    chartData = [],
-    total = 0,
-    average,
-    timeBetweenBeats,
-    calculatedRate,
-    newObj;
-    
-    for(var i=0; i < this.props.chartData.length - 1; i++){
-      timeBetweenBeats = this.props.chartData[i + 1].date - this.props.chartData[i].date;
-      calculatedRate = 60/(timeBetweenBeats/1000);
-      newObj = {rate: calculatedRate, index: i}
-  
-      total += calculatedRate;
-      chartData.push(newObj)
-    }
-    
-    if(chartData.length > 5){
-      total = 0;
-      //calculate new total and average using just last 5 values
-      for(var i=1; i < 6; i++){
-        total += chartData[chartData.length-i].rate;
-      }
-      average = parseInt(total / 5);
-    } else {
-      average = parseInt(total / chartData.length);
-    }
-    
     var dataDisplay;
     if(this.state.showData){
       dataDisplay = 
           <div>
             <ul>
-              {chartData.map(function(data, idx){
+              {this.props.tapper.chartData.map(function(data, idx){
                 return <li key={idx}>{parseInt(data.rate)}</li>
               })}
             </ul>
@@ -72,19 +25,31 @@ var HeartGraphSummary = React.createClass({
     } else {
       dataDisplay = <button onClick={this.toggleDataDisplay}>Show Data Points</button>
     }
+    
+    var localChartSeries =  [
+                              {
+                                field: 'rate',
+                                name: 'Heart Rate',
+                                color: 'green'
+                              }
+                            ];
     return(
       <div>
         <div>
-          <h1>Calculated Heart Rate: {average} bpm</h1>
+          <h1>Calculated Heart Rate: {this.props.tapper.currentAverage} bpm</h1>
         </div>
         <div>
-          <p>Accurate Heart rate achieved if last 5 taps are within +/- 10 bpm of the average.</p>
+          <p>Accurate Heart rate achieved if each of the last {LAST_X_HEART_RATES} taps are within +/- 10 bpm of the average for the same {LAST_X_HEART_RATES} taps.</p>
         </div>
         <div>
           <h2>DATA</h2>
           {dataDisplay}
         </div>
-        <LineChart width={700} height={300} data={chartData} chartSeries={chartSeries} x={x} />
+        <LineChart  width={this.props.width} 
+                    height={this.props.height} 
+                    data={this.props.tapper.chartData} 
+                    chartSeries={localChartSeries} 
+                    x={this.props.x} />
         <p>Reload Browser window to tap your heart rate again.</p>
       </div>
       
