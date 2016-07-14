@@ -20,10 +20,10 @@ var HeartGraphSummary = React.createClass({
                 return <li key={idx}>{parseInt(data.rate)}</li>
               })}
             </ul>
-            <button onClick={this.toggleDataDisplay}>Hide Data Points</button>
+            <div className="btn btn-green" onClick={this.toggleDataDisplay}>Hide Data Points</div>
           </div>;
     } else {
-      dataDisplay = <button onClick={this.toggleDataDisplay}>Show Data Points</button>
+      dataDisplay = <div className="btn btn-green" onClick={this.toggleDataDisplay}>Show Data Points</div>
     }
     
     var localChartSeries =  [

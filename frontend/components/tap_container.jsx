@@ -41,9 +41,10 @@ var TapContainer = React.createClass({
     return(
       <div className="tap-container" onClick={this.registerTap}>
         <h1>Instructions</h1>
-        <div>1. feel pulse</div>
-        <div>2. start tapping screen</div>
-        <div>3. keep tapping until scenario is over and summary screen displays </div>
+       
+        <p>1. feel pulse</p>
+        <p>2. click when you feel a beat for every beat (once a range of accuracy has been achieved, you can stop...just keep clicking!)</p>
+        <p>3. once the scenario is over, a summary screen will display (ok, now you can stop clicking) </p>
         <HeartGraph tapper={this.state.tapper} 
                     handleAccuracyAchieved={this.handleAccuracyAchieved}
                     width={width}
