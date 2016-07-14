@@ -31,16 +31,12 @@ TapRecorder.prototype = {
     var sum = 0, 
         average = 0;
         
-    if(this.chartData.length < LAST_X_HEART_RATES){
-      sum = 0;
-      
+    if(this.chartData.length < LAST_X_HEART_RATES){      
       for(var i = 0; i < this.chartData.length; i++){
         sum += this.chartData[i].rate;
       }
       average = parseInt(sum / this.chartData.length);
     } else {
-      sum = 0;
-      
       //sum last 5 rates from chartData to calculate average
       for(var i=1; i < 6; i++){
         sum += this.chartData[this.chartData.length-i].rate;
@@ -66,7 +62,7 @@ TapRecorder.prototype = {
     if(this.chartData.length < LAST_X_HEART_RATES){
       return false;
     } else {
-      //current accuracy range set as +/- 10 beats/min
+      //current accuracy range set as +/- 10 beats/min defined by ACCURACY_RANGE_LIMIT above
       var outOfRange = false;
       for(var i=1; i < (LAST_X_HEART_RATES + 1); i++){
         if(Math.abs((this.chartData[this.chartData.length-i].rate)-this.currentAverage) > ACCURACY_RANGE_LIMIT){

@@ -4,7 +4,7 @@ var LineChart = require('react-d3-basic').LineChart;
 var HeartGraph = React.createClass({
   componentWillReceiveProps: function(){
     //must have at least X recorded elements to obtain a 'valid accuracy'
-    //LAST_X_HEART_RATES in tap_recorder.js
+    //X defined in tap_recorder.js as global LAST_X_HEART_RATES
     if(this.props.tapper.isAccuracyAchieved()){
       this.props.handleAccuracyAchieved();
     }
