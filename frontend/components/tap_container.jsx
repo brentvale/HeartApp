@@ -4,38 +4,53 @@ var HeartGraphSummary = require('./heart_graph_summary.jsx').HeartGraphSummary;
 
 var TapContainer = React.createClass({
   getInitialState: function(){
-    return {index: 0, tapTimestamps: [], accuracyAchieved: false};
+    return {tapper: new TapRecorder()}
   },
   handleAccuracyAchieved: function(){
-    this.setState({accuracyAchieved:true});
+    this.state.tapper.accuracyAchieved = true;
   },
   registerTap: function(){
-    var tempIndex = this.state.index + 1;
+    this.state.tapper.addTap({date: new Date()});
+    var newTapperState = this.state.tapper;
     
-    var toPush = {date: new Date(),
-                  index: this.state.index};
-    
-    var newTimeStampsArray = [];
-    for(var i = 0; i < this.state.tapTimestamps.length; i++){
-      newTimeStampsArray.push(this.state.tapTimestamps[i]);
-    }
-    
-    newTimeStampsArray.push(toPush);
-
-    this.setState({index: tempIndex, tapTimestamps: newTimeStampsArray});
+    this.setState({tapper: newTapperState});
   },
   render: function(){
-    if(this.state.accuracyAchieved){
+  var width = 700,
+      height = 300,
+      chartSeries = [
+        {
+          field: 'rate',
+          name: 'Heart Rate',
+          color: 'red'
+        }
+      ],
+      x = function(d) {
+        return d.index;
+      };
+    
+    if(this.state.tapper.accuracyAchieved){
       return(
-        <HeartGraphSummary chartData={this.state.tapTimestamps}/>
+        <HeartGraphSummary  tapper={this.state.tapper}
+                            width={width}
+                            height={height}
+                            chartSeries={chartSeries}
+                            x={x}/>
       )
     }
     return(
       <div className="tap-container" onClick={this.registerTap}>
         <h1>Instructions</h1>
-        <div>1. feel pulse</div>
-        <div>2. start tapping screen</div>
-        <HeartGraph chartData={this.state.tapTimestamps} handleAccuracyAchieved={this.handleAccuracyAchieved} />
+       
+        <p>1. feel pulse</p>
+        <p>2. click when you feel a beat for every beat (once a range of accuracy has been achieved, you can stop...just keep clicking!)</p>
+        <p>3. once the scenario is over, a summary screen will display (ok, now you can stop clicking) </p>
+        <HeartGraph tapper={this.state.tapper} 
+                    handleAccuracyAchieved={this.handleAccuracyAchieved}
+                    width={width}
+                    height={height}
+                    chartSeries={chartSeries}
+                    x={x} />
       </div>
     )
   }
